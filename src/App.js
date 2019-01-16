@@ -1,27 +1,34 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Container1 from './presentational/containers/Container1';
+import Container2 from './presentational/containers/Container2';
 
 class App extends Component {
-  render() {
+  constructor (props) {
+    super (props);
+    this.modules = this.props.airlineData.modules;
+    this.containers = {
+      Container1,
+      Container2
+    };
+  }
+
+  render () {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
+      <>
+        {
+          this.modules.map(module => {
+            const containerName = module.config.container;
+            const ContainerInstance = this.containers[containerName];
+            return (
+              <ContainerInstance 
+                key={module.id}
+                {...module.config}
+              />
+            )
+          })
+        }
+      </>
+    )
   }
 }
 
